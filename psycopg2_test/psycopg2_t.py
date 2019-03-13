@@ -3,9 +3,9 @@ import psycopg2
 # Connect to the DB
 con = psycopg2.connect(
     host = "192.168.1.226",
-    database = "clarity",
-    user = "clarity",
-    password = "clarity"
+    database = "",
+    user = "",
+    password = ""
 )
 
 # Cursor
