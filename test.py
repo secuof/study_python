@@ -1,29 +1,19 @@
-import paramiko
+import requests
+from urllib.parse import urlparse
 
-p_key = paramiko.RSAKey.from_private_key_file("/Users/secuof/ssh/auth.pem")
-con = paramiko.SSHClient()
-con.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-print("connecting")
-con.connect(hostname = "52.78.93.195", username = "ubuntu", pkey = p_key)
-print("connected")
+print('Beginning file download with requests')
 
-commands = ["ls -al", "ls -alh"]
-command = "df -h"
+file_name = "jamax-rest-1.3.4-RELEASE.jar"
+url = 'http://central.maven.org/maven2/ba/jamax/util/jamax-rest/1.3.4-RELEASE/'+file_name
+r = requests.get(url, stream=True)
 
-print("Executing {$",command,"}")
-# stdin , stdout, stderr = con.exec_command(command)
-# print(stdout.readlines())
-# print("Errors")
-# print(stderr.readlines())
 
-for command in commands:
-	print("Executing {$", f"{command}", "}")
-	stdin , stdout, stderr = con.exec_command(command)
-	print(stdout.read())
-	print("Errors")
-	print(stderr.read())
+print(getFilenameFromURL(url))
+# headers = {'user-agent': 'test-app/0.0.1'}  
+# r = requests.get(url, headers=headers)  
 
-# stdin , stdout, stderr = con.exec_command(command)
-# print(stdout.read())
+with open('/Users/secuof/Downloads/'+file_name, 'wb') as file:  
+	file.write(r.content)
 
-con.close()
+print(url,",", r.status_code,",", r.headers['content-type'])
+file.close()
